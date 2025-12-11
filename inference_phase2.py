@@ -37,6 +37,8 @@ def load_model(weights_path: str, input_dim: int):
                 "joblib is required to load .joblib/.pkl models for phase 2."
             ) from exc
         model = joblib.load(weights_path)
+        if isinstance(model, dict) and "model" in model:
+            return "sklearn_dict", model
         return "sklearn", model
 
     model = Phase2Net(input_dim=input_dim)
@@ -51,14 +53,29 @@ def run_inference(xfile, latentfile, weights, output):
     Z = pd.read_csv(latentfile)
 
     df = pd.concat([X, Z[["z1","z2","z3"]]], axis=1)
-    data = df.drop(columns=["hh_id"]).values.astype(np.float32)
     hh_ids = df["hh_id"]
 
-    model_type, model = load_model(weights, input_dim=data.shape[1])
+    # keep numeric feature frame for downstream reordering/normalisation
+    feature_df = df.drop(columns=["hh_id"]).astype(np.float32)
 
-    if model_type == "sklearn":
+    model_type, model = load_model(weights, input_dim=feature_df.shape[1])
+
+    if model_type == "sklearn_dict":
+        feature_names = model["feature_names"]
+        missing = [c for c in feature_names if c not in feature_df.columns]
+        if missing:
+            raise ValueError(f"Missing required features for phase 2 model: {missing}")
+        ordered = feature_df[feature_names].to_numpy(dtype=np.float32)
+        mean = np.asarray(model["mean"], dtype=np.float32)
+        std = np.asarray(model["std"], dtype=np.float32)
+        std[std == 0] = 1.0
+        normed = (ordered - mean) / std
+        pred = np.asarray(model["model"].predict(normed)).astype(np.float32).flatten()
+    elif model_type == "sklearn":
+        data = feature_df.to_numpy(dtype=np.float32)
         pred = np.asarray(model.predict(data)).astype(np.float32).flatten()
     else:
+        data = feature_df.to_numpy(dtype=np.float32)
         with torch.no_grad():
             pred = model(torch.tensor(data)).numpy().flatten()
 

@@ -23,8 +23,8 @@ def main():
 
     # weight paths
     w_p1 = f"w_p1/{preset}.pt"
-    # autoencoder weights folder is named autoencoder_weights in this repo
-    w_ae = f"autoencoder_weights/{preset}.pt"
+    # autoencoder weights stored under w_ae
+    w_ae = f"w_ae/autoencoder_{preset}.pt"
     # phase 2 stacked ensemble weights are stored as .joblib
     w_p2 = f"w_p2/{preset}.joblib"
 
