@@ -6,6 +6,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
+import joblib
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
@@ -250,6 +251,27 @@ def main(args):
     stack.fit(X_train, y_train.flatten())
     stack_preds_test = stack.predict(X_test)
 
+    # -----------------------------------------------------------
+    # SAVE TRAINED MODELS
+    # -----------------------------------------------------------
+    torch.save(
+        {"state_dict": nn_model.state_dict(), "input_dim": X_train.shape[1]},
+        os.path.join(outdir, "nn_model.pt"),
+    )
+    xgb_model.save_model(os.path.join(outdir, "xgb_model.json"))
+    joblib.dump(rf_model, os.path.join(outdir, "rf_model.joblib"))
+    joblib.dump(lin_model, os.path.join(outdir, "lin_model.joblib"))
+    joblib.dump(stack, os.path.join(outdir, "stack_model.joblib"))
+    joblib.dump(
+        {
+            "model": stack,
+            "mean": mean,
+            "std": std,
+            "feature_names": feature_cols,
+        },
+        os.path.join(outdir, "stack_inference_bundle.joblib"),
+    )
+
     y_true = y_test.flatten()
 
     # -----------------------------------------------------------
@@ -373,4 +395,3 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     main(args)
-

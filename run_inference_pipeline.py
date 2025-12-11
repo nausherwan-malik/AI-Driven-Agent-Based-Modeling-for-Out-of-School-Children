@@ -23,8 +23,10 @@ def main():
 
     # weight paths
     w_p1 = f"w_p1/{preset}.pt"
-    w_ae = f"w_ae/{preset}.pt"
-    w_p2 = f"w_p2/{preset}.pt"
+    # autoencoder weights folder is named autoencoder_weights in this repo
+    w_ae = f"autoencoder_weights/{preset}.pt"
+    # phase 2 stacked ensemble weights are stored as .joblib
+    w_p2 = f"w_p2/{preset}.joblib"
 
     # intermediate paths
     p1_out = f"{out}/p1_pred.csv"
@@ -69,4 +71,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
