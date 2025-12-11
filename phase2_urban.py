@@ -28,9 +28,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-# ---------------------------------------------------------------
 # DATASET WRAPPER
-# ---------------------------------------------------------------
 class DatasetWrapper(Dataset):
     def __init__(self, X, Y):
         self.X = torch.tensor(X, dtype=torch.float32)
@@ -43,9 +41,7 @@ class DatasetWrapper(Dataset):
         return self.X[idx], self.Y[idx]
 
 
-# ---------------------------------------------------------------
 # NEURAL NETWORK MODEL
-# ---------------------------------------------------------------
 class ResidualBlock(nn.Module):
     def __init__(self, dim, dropout=0.05):
         super().__init__()
@@ -80,9 +76,7 @@ class Phase2Net(nn.Module):
         return self.out(x)
 
 
-# ---------------------------------------------------------------
 # TRAIN NEURAL NETWORK
-# ---------------------------------------------------------------
 def train_nn(model, X_train, Y_train, lr=0.001, batch=16, epochs=120):
     train_ds = DatasetWrapper(X_train, Y_train)
     loader = DataLoader(train_ds, batch_size=batch, shuffle=True)
@@ -105,9 +99,7 @@ def train_nn(model, X_train, Y_train, lr=0.001, batch=16, epochs=120):
     return model
 
 
-# ---------------------------------------------------------------
 # EVALUATION HELPERS
-# ---------------------------------------------------------------
 def evaluate_regression(name, y_true, y_pred):
     mse = mean_squared_error(y_true, y_pred)
     metrics = dict(
@@ -159,9 +151,7 @@ def find_optimal_threshold(y_true, y_prob):
     return best_f1_thr, best_j_thr
 
 
-# ---------------------------------------------------------------
 # TRAINING PIPELINE
-# ---------------------------------------------------------------
 def main(args):
     print("\n=== PHASE 2 URBAN – ENSEMBLE TRAINING ===\n")
 
@@ -383,9 +373,7 @@ def main(args):
     print("\nAll plots and metrics saved.\nDone.\n")
 
 
-# ---------------------------------------------------------------
 # CLI
-# ---------------------------------------------------------------
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 

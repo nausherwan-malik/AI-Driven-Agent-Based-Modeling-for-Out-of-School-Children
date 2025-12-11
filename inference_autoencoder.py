@@ -7,9 +7,6 @@ import torch
 import torch.nn as nn
 
 
-# ---------------------------------------------------------
-# SAME MODEL DEFINITION YOU USE FOR TRAINING
-# ---------------------------------------------------------
 class Autoencoder(nn.Module):
     def __init__(self, input_dim: int, latent_dim: int = 3):
         super().__init__()
@@ -30,9 +27,7 @@ class Autoencoder(nn.Module):
         return z, x_hat
 
 
-# ---------------------------------------------------------
 # LOAD + CLEAN CSV
-# ---------------------------------------------------------
 def load_data(path: str, id_col: str | None):
     df = pd.read_csv(path)
 
@@ -48,9 +43,7 @@ def load_data(path: str, id_col: str | None):
     return data, ids, df.columns.tolist()
 
 
-# ---------------------------------------------------------
 # RUN INFERENCE
-# ---------------------------------------------------------
 def encode_with_autoencoder(model, x: np.ndarray, latent_dim: int = 3):
     device = next(model.parameters()).device
     model.eval()
@@ -62,9 +55,7 @@ def encode_with_autoencoder(model, x: np.ndarray, latent_dim: int = 3):
     return z.cpu().numpy()
 
 
-# ---------------------------------------------------------
 # MAIN PIPELINE
-# ---------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="Autoencoder Inference Pipeline")
 

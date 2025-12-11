@@ -18,9 +18,7 @@ import seaborn as sns
 import random
 
 
-# ============================================================
 # SET SEED
-# ============================================================
 
 def set_seed(seed=42):
     np.random.seed(seed)
@@ -31,9 +29,7 @@ def set_seed(seed=42):
     torch.backends.cudnn.benchmark = False
 
 
-# ============================================================
 # DATASET
-# ============================================================
 
 class SingleOutputDataset(Dataset):
     def __init__(self, X, y_single):
@@ -47,9 +43,7 @@ class SingleOutputDataset(Dataset):
         return self.X[idx], self.y[idx]
 
 
-# ============================================================
 # URBAN STRONG MODELS (Outputs 2, 4, 5)
-# ============================================================
 
 class Model2Strong(nn.Module):
     """Strong model for Output 2."""
@@ -162,9 +156,7 @@ class UrbanStrongModel5(nn.Module):
         return self.out(x)
 
 
-# ============================================================
 # BASELINE MODELS (Outputs 1 & 3)
-# ============================================================
 
 class Model1(nn.Module):
     def __init__(self, input_dim):
@@ -188,9 +180,7 @@ class Model4(nn.Module):  # baseline for Output 3
     def forward(self, x): return self.net(x)
 
 
-# ============================================================
 # MODEL FACTORY
-# ============================================================
 
 MODEL_FACTORY = {
     1: Model1,
@@ -208,9 +198,7 @@ EPOCHS_MAP = {
 }
 
 
-# ============================================================
 # TRAINING
-# ============================================================
 
 def train_model(model, X_train, y_train, epochs=40, lr=0.001, batch=32):
     ds = SingleOutputDataset(X_train, y_train)
@@ -230,9 +218,7 @@ def train_model(model, X_train, y_train, epochs=40, lr=0.001, batch=32):
     return model
 
 
-# ============================================================
 # METRICS
-# ============================================================
 
 def evaluate(preds, y_true):
     acc = accuracy_score(y_true, preds)
@@ -243,9 +229,7 @@ def evaluate(preds, y_true):
     return acc, mae, mse, rmse, f1
 
 
-# ============================================================
 # MAIN PIPELINE
-# ============================================================
 
 def run(args):
 
@@ -401,9 +385,7 @@ def run(args):
     print("\n DONE \n")
 
 
-# ============================================================
 # CLI
-# ============================================================
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

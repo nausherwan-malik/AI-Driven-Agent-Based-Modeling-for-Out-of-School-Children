@@ -5,9 +5,7 @@ import pandas as pd
 import torch.nn as nn
 
 
-# -------------------------------
 # LOAD MODELS (same as training)
-# -------------------------------
 class Model1(nn.Module):
     def __init__(self, input_dim):
         super().__init__()
@@ -73,9 +71,7 @@ P1_MODELS = {
 }
 
 
-# -------------------------------
 # RUN INFERENCE
-# -------------------------------
 def run_inference(xfile, weights_file, output_file):
     df = pd.read_csv(xfile)
     hh_ids = df["hh_id"]

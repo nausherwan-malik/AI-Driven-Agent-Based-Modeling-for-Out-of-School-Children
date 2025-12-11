@@ -33,9 +33,7 @@ def main():
     ae_out = f"{out}/ae_latent.csv"
     p2_out = f"{out}/final_p2_pred.csv"
 
-    # ------------------------
     # Phase 1
-    # ------------------------
     run([
         sys.executable, "inference_phase1.py",
         "--preset", preset,
@@ -44,9 +42,7 @@ def main():
         "--output", p1_out
     ])
 
-    # ------------------------
     # Autoencoder
-    # ------------------------
     run([
         sys.executable, "inference_autoencoder.py",
         "--input", p1_out,
@@ -54,9 +50,7 @@ def main():
         "--output", ae_out
     ])
 
-    # ------------------------
     # Phase 2
-    # ------------------------
     run([
         sys.executable, "inference_phase2.py",
         "--xfile", args.xfile,

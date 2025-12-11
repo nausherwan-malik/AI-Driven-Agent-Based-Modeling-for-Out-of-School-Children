@@ -28,9 +28,7 @@ except ImportError:
     SKLEARN_AVAILABLE = False
     GaussianMixture = None
 
-# -------------------------------------------------------------
 # COLOR OUTPUT
-# -------------------------------------------------------------
 RESET = "\033[0m"
 BOLD = "\033[1m"
 RED = "\033[31m"
@@ -44,9 +42,7 @@ def color(txt, c, enable=True):
 def bold(txt, enable=True):
     return f"{BOLD}{txt}{RESET}" if enable else txt
 
-# -------------------------------------------------------------
 # DATA CLASSES
-# -------------------------------------------------------------
 @dataclass
 class SyntheticMeta:
     synthetic_hh_id: int
@@ -54,9 +50,7 @@ class SyntheticMeta:
     categories: List[str]
     modified_fields: Dict[str, Dict[str, Any]]
 
-# -------------------------------------------------------------
 # GMM SAMPLING HELPERS
-# -------------------------------------------------------------
 def fit_gmm(values: np.ndarray, components: int, seed: int):
     values = values[~np.isnan(values)]
     if len(values) == 0 or not SKLEARN_AVAILABLE:
@@ -111,9 +105,7 @@ def sample_tail(values, tail, n, use_gmm, comps, rng):
 
     return s
 
-# -------------------------------------------------------------
 # CATEGORY ASSIGNMENT
-# -------------------------------------------------------------
 def assign_categories(n_total, n_income_tail, n_route_unsafe, n_distance_tail, rng):
     labels = (["income_tail"] * n_income_tail +
               ["route_unsafe"] * n_route_unsafe +
@@ -154,9 +146,7 @@ def assign_categories(n_total, n_income_tail, n_route_unsafe, n_distance_tail, r
 
     return categories
 
-# -------------------------------------------------------------
 # SYNTHETIC GENERATOR
-# -------------------------------------------------------------
 def generate_synthetic(
     x, ae, y,
     n_total=200,
@@ -295,9 +285,7 @@ def generate_synthetic(
         meta_list
     )
 
-# -------------------------------------------------------------
 # PLOTTING
-# -------------------------------------------------------------
 def ensure_dir(p):
     os.makedirs(p, exist_ok=True)
 
@@ -317,9 +305,7 @@ def plot_hist(df, cols, title, out_png, out_pdf):
     fig.savefig(out_pdf)
     plt.close(fig)
 
-# -------------------------------------------------------------
 # SUMMARY + JSON SAVE
-# -------------------------------------------------------------
 def save_meta(meta_list, txt_path, json_path):
     with open(txt_path, "w") as f:
         for m in meta_list:
@@ -328,9 +314,7 @@ def save_meta(meta_list, txt_path, json_path):
     with open(json_path, "w") as f:
         json.dump([asdict(m) for m in meta_list], f, indent=2)
 
-# -------------------------------------------------------------
 # CLI + MAIN
-# -------------------------------------------------------------
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--x-path",  default="x_urban.csv")
