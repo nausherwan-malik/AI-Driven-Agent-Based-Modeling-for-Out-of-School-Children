@@ -413,7 +413,7 @@ def main():
     if "debug_info" not in st.session_state: st.session_state.debug_info = None
 
     # --- Header ---
-    st.markdown('<div class="title-pill">AGENT BODY MODELING FOR OUT OF SCHOOL CHILDREN</div>', unsafe_allow_html=True)
+    st.markdown('<div class="title-pill">AGENT BASED MODELING FOR OUT OF SCHOOL CHILDREN</div>', unsafe_allow_html=True)
 
     # --- Region Selector (no expander to avoid overlap) ---
     st.markdown('<div class="section-header">Configuration & Region</div>', unsafe_allow_html=True)
